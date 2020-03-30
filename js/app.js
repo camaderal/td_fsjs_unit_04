@@ -16,12 +16,20 @@ appGameBtn.addEventListener( "click", (e)=>{
 // Add event listeners to the letter key buttons
 const qwerty = document.getElementById("qwerty");
 qwerty.addEventListener("click", (e) => {
-    currentGameInstance.handleInteraction(e);
+    
+    // letter key button clicked event handling
+    if(e.type === "click" && e.target.type === "submit"){
+        currentGameInstance.handleInteraction(e.target.textContent);
+    }
 });
 
 // Add event listeners to the letter keyup presses
 document.addEventListener("keyup", (e) => {
-    currentGameInstance.handleInteraction(e);
+    // letter keyup event handling
+    let key = e.key;
+    if((e.type === "keyup") && /^[a-zA-Z]$/.test(key)){
+        currentGameInstance.handleInteraction(key.toLowerCase());
+    }
 });
 
 // Create percentage element

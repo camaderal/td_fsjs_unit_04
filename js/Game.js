@@ -74,37 +74,19 @@ class Game{
     /**
      * Main entrypoint for interaction events in the game.
      * 
-     * @param {Event} event object fired
+     * @param {String} letter chosen
      */
-    handleInteraction(e){
+    handleInteraction(letter){
         // If game is not in progress, reject letter key clicks and presses
         if(!this.gameInProgress){
             return;
         }
 
-        // letter key button clicked event handling
-        if(e.type === "click" && e.target.type === "submit"){
-            this.checkLetter(e.target.textContent);
-        }
-
-        // letter keyup event handling
-        let key = e.key;
-        if((e.type === "keyup") && /^[a-zA-Z]$/.test(key)){
-            this.checkLetter(key.toLowerCase());
-        }
-    }
-
-    /**
-     * Main logic when a letter is selected.
-     * 
-     * @param {String} letter chosen
-     */
-    checkLetter(letter){
-
         // check if already guessed
         if(this.chosenLetters.includes(letter)){
             return;
         }
+
         // when previously not chosen, add to chosen list
         this.chosenLetters.push(letter);
         
