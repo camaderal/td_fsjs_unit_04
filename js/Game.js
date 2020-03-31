@@ -11,7 +11,10 @@ class Game{
      * 
      */
     constructor(){
+        
+        // initialize missed
         this.missed = 0;
+
         this.phrases = [
             new Phrase("Speak of the devil"), 
             new Phrase("Beat around the bush"), 
@@ -28,7 +31,19 @@ class Game{
             this.keysButtonMap[keyButton.textContent] = keyButton;
         });
 
+        // initialize scoreboard
+        const hearts = document.querySelectorAll("#scoreboard img"); 
+        for(let i=0; i < MAX_TRIES; i++){            
+            hearts[i].src = "images/liveHeart.png";
+        }
+        // initialized chosen letters
         this.chosenLetters = [];
+        for(let key in this.keysButtonMap){
+            this.keysButtonMap[key].classList.remove("chosen");
+            this.keysButtonMap[key].classList.remove("wrong");
+        }
+
+        this.gameInProgress = false;
     }
 
     /**
@@ -39,21 +54,8 @@ class Game{
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
 
-        // initialize scoreboard
-        const hearts = document.querySelectorAll("#scoreboard img"); 
-        for(let i=0; i < MAX_TRIES; i++){            
-            hearts[i].src = "images/liveHeart.png";
-        }
-
-        // initialize missed
-        this.missed = 0;
-
-        // initialized chosen letters
-        this.chosenLetters = [];
-        for(let key in this.keysButtonMap){
-            this.keysButtonMap[key].classList.remove("chosen");
-            this.keysButtonMap[key].classList.remove("wrong");
-        }
+        // State that game is in progress
+        this.gameInProgress = true;
 
         // remove overlay
         this.showOrHideOverlay(false);
@@ -73,6 +75,10 @@ class Game{
      * @param {String} letter chosen
      */
     handleInteraction(letter){
+        // If game is not in progress, reject letter key clicks and presses
+        if(!this.gameInProgress){
+            return;
+        }
 
         // check if already guessed
         if(this.chosenLetters.includes(letter)){
@@ -86,16 +92,21 @@ class Game{
         if(this.activePhrase.checkLetter(letter)){
             this.keysButtonMap[letter].classList.add("chosen");
             this.activePhrase.showMatchedLetter(letter);
-            
+
             if(this.checkForWin()){
                 this.gameOver(true);
             }
+
+            correctSound.cloneNode().play();
         }else{
             this.keysButtonMap[letter].classList.add("wrong");
             this.removeLife();    
+
             if (this.missed >= MAX_TRIES){
                 this.gameOver(false);
             }
+
+            wrongSound.cloneNode().play();
         }
 
     }
@@ -107,7 +118,6 @@ class Game{
         this.missed++;
         const hearts = document.querySelectorAll("#scoreboard img"); 
         hearts[hearts.length - this.missed].src = "images/lostHeart.png";
-        
     }
 
     /**
@@ -131,12 +141,20 @@ class Game{
             overlayH1.textContent = "You won!";
             overlayH1.classList.add("win");
             overlayH1.classList.remove("lose");
+    
+            winSound.play();
         }else{
             overlayH1.textContent = "You lose!";
             overlayH1.classList.remove("win");
             overlayH1.classList.add("lose");
+
+            loseSound.play();
         }
+
+        this.gameInProgress = false;
         this.showOrHideOverlay(true);
+
+        bgmSound.pause();
     }
 
     /**
