@@ -3,9 +3,12 @@
 
 Changes made to the styling:
 - Added a background image. Image credited to: <a href="http://www.freepik.com">Designed by Freepik</a>
-- Changed styling of the overlay and banner header and made it glow indefinitely.
+- Changed styling of the overlay and banner header and make it glow indefinitely.
 - Change styling of all buttons to match the overall feel of the game. 
 - Change font style from Montserrat to Orbitron to match the overall feel of the game. 
 
 Additional changes:
 - Shows a percentage how much is decoded. 
+- Added sound effects and bgm.
+ - BGM used "QUIRKY PUZZLE GAME MENU" is credited to : [Music by Eric Matyas](www.soundimage.org)
+ - Other sound effects came from Windows alerts.
