@@ -32,14 +32,14 @@ bgmSound.volume = 0.5;
 
 let currentGameInstance = null;
 
-// letter key button clicked event handling
+// letter key button clicked event handler
 const letterButtonClick = (e) =>{
     if(e.type === "click" && e.target.type === "submit"){
         currentGameInstance.handleInteraction(e.target.textContent);
     }
 }
 
-// letter keyup event handling
+// letter keyup event handler
 const letterKeyPress =  (e) => {
     let key = e.key;
     if((e.type === "keyup") && /^[a-zA-Z]$/.test(key)){
