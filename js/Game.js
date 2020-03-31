@@ -15,6 +15,7 @@ class Game{
         // initialize missed
         this.missed = 0;
 
+        // initialize phrases
         this.phrases = [
             new Phrase("Speak of the devil"), 
             new Phrase("Beat around the bush"), 
@@ -36,13 +37,16 @@ class Game{
         for(let i=0; i < MAX_TRIES; i++){            
             hearts[i].src = "images/liveHeart.png";
         }
+
         // initialized chosen letters
         this.chosenLetters = [];
         for(let key in this.keysButtonMap){
             this.keysButtonMap[key].classList.remove("chosen");
             this.keysButtonMap[key].classList.remove("wrong");
+            this.keysButtonMap[key].disabled =false;
         }
 
+        // game hasn't started yet
         this.gameInProgress = false;
     }
 
@@ -70,7 +74,7 @@ class Game{
     }
 
     /**
-     * Main entrypoint for interaction events in the game.
+     * Controls the game logic that starts with choosing a letter.
      * 
      * @param {String} letter chosen
      */
@@ -87,6 +91,7 @@ class Game{
 
         // when previously not chosen, add to chosen list
         this.chosenLetters.push(letter);
+        this.keysButtonMap[letter].disabled = true;
         
         // check whether the selected letter is part of the phrase
         if(this.activePhrase.checkLetter(letter)){
@@ -102,22 +107,9 @@ class Game{
             this.keysButtonMap[letter].classList.add("wrong");
             this.removeLife();    
 
-            if (this.missed >= MAX_TRIES){
-                this.gameOver(false);
-            }
-
             wrongSound.cloneNode().play();
         }
 
-    }
-
-    /**
-     * Removes a life.
-     */
-    removeLife(){
-        this.missed++;
-        const hearts = document.querySelectorAll("#scoreboard img"); 
-        hearts[hearts.length - this.missed].src = "images/lostHeart.png";
     }
 
     /**
@@ -128,6 +120,19 @@ class Game{
             return false;
         }
         return true;
+    }
+
+    /**
+     * Removes a life.
+     */
+    removeLife(){
+        this.missed++;
+        const hearts = document.querySelectorAll("#scoreboard img"); 
+        hearts[hearts.length - this.missed].src = "images/lostHeart.png";
+
+        if (this.missed >= MAX_TRIES){
+            this.gameOver(false);
+        }
     }
 
     /**

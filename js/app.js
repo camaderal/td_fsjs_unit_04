@@ -40,7 +40,7 @@ const letterButtonClick = (e) =>{
 }
 
 // letter keyup event handler
-const letterKeyPress =  (e) => {
+const letterKeyup =  (e) => {
     let key = e.key;
     if((e.type === "keyup") && /^[a-zA-Z]$/.test(key)){
         currentGameInstance.handleInteraction(key.toLowerCase());
@@ -52,7 +52,7 @@ appGameBtn.addEventListener( "click", (e)=>{
     if(e.target.id === "btn__reset"){
         // remove listeners to previous game
         qwerty.removeEventListener("click", letterButtonClick);
-        document.removeEventListener("keyup", letterKeyPress);
+        document.removeEventListener("keyup", letterKeyup);
 
         //create and start new game
         currentGameInstance = new Game();
@@ -62,7 +62,7 @@ appGameBtn.addEventListener( "click", (e)=>{
         qwerty.addEventListener("click", letterButtonClick);
 
         // Add event listeners to the letter keyup presses
-        document.addEventListener("keyup", letterKeyPress);
+        document.addEventListener("keyup", letterKeyup);
 
         // play main bgm
         bgmSound.currentTime = 0;
