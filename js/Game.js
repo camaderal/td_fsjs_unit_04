@@ -28,7 +28,6 @@ class Game{
             this.keysButtonMap[keyButton.textContent] = keyButton;
         });
 
-        this.gameInProgress = false;
         this.chosenLetters = [];
     }
 
@@ -56,9 +55,6 @@ class Game{
             this.keysButtonMap[key].classList.remove("wrong");
         }
 
-        // State that game is in progress
-        this.gameInProgress = true;
-
         // remove overlay
         this.showOrHideOverlay(false);
     }
@@ -77,10 +73,6 @@ class Game{
      * @param {String} letter chosen
      */
     handleInteraction(letter){
-        // If game is not in progress, reject letter key clicks and presses
-        if(!this.gameInProgress){
-            return;
-        }
 
         // check if already guessed
         if(this.chosenLetters.includes(letter)){
@@ -144,7 +136,6 @@ class Game{
             overlayH1.classList.remove("win");
             overlayH1.classList.add("lose");
         }
-        this.gameInProgress = false;
         this.showOrHideOverlay(true);
     }
 
